@@ -84,19 +84,6 @@
                     </span>
                 </a>
 
-                <!-- Menunggu Konfirmasi -->
-                <a href="{{ route('petani.kelolaPesanan', ['status' => 'pending']) }}"
-                    class="flex items-center gap-3 px-2 py-2 hover:bg-gray-50
-                        transition-all duration-150 {{ request('status') == 'pending' ? 'bg-yellow-50 border-l-2 border-yellow-500' : '' }}">
-                    <div class="flex items-center gap-1.5">
-                        <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
-                        <span class="text-sm font-medium text-gray-800">Menunggu Konfirmasi</span>
-                    </div>
-                    <span class="text-xs font-semibold text-[#ff8f00] bg-[#ff8f00]/10 px-2 py-0.5 rounded-full">
-                        {{ $statusCounts['pending'] ?? 0 }}
-                    </span>
-                </a>
-
                 <!-- Dikonfirmasi -->
                 <a href="{{ route('petani.kelolaPesanan', ['status' => 'dikonfirmasi']) }}"
                     class="flex items-center gap-3 px-2 py-2 hover:bg-gray-50
@@ -116,7 +103,7 @@
                         transition-all duration-150 {{ request('status') == 'diproses' ? 'bg-purple-50 border-l-2 border-purple-500' : '' }}">
                     <div class="flex items-center gap-1.5">
                         <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
-                        <span class="text-sm font-medium text-gray-800">Sedang Diproses</span>
+                        <span class="text-sm font-medium text-gray-800">Diproses</span>
                     </div>
                     <span class="text-xs font-semibold text-[#ff8f00] bg-[#ff8f00]/10 px-2 py-0.5 rounded-full">
                         {{ $statusCounts['diproses'] ?? 0 }}
@@ -129,7 +116,7 @@
                         transition-all duration-150 {{ request('status') == 'dikirim' ? 'bg-indigo-50 border-l-2 border-indigo-500' : '' }}">
                     <div class="flex items-center gap-1.5">
                         <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
-                        <span class="text-sm font-medium text-gray-800">Dalam Pengiriman</span>
+                        <span class="text-sm font-medium text-gray-800">Dikirim</span>
                     </div>
                     <span class="text-xs font-semibold text-[#ff8f00] bg-[#ff8f00]/10 px-2 py-0.5 rounded-full">
                         {{ $statusCounts['dikirim'] ?? 0 }}

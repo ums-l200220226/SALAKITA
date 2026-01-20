@@ -82,106 +82,106 @@
     </div>
 
     <!-- Product Grid -->
-<div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-8">
-    @forelse($products as $product)
-    <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden group product-card flex flex-col"
-        data-kategori="{{ $product->kategori }}">
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-8">
+        @forelse($products as $product)
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden group product-card flex flex-col"
+            data-kategori="{{ $product->kategori }}">
 
-        <!-- Image Container -->
-        <div class="relative overflow-hidden">
-            <img src="{{ $product->gambar ? asset('storage/' . $product->gambar) : '/img/placeholder.jpg' }}"
-                class="h-32 sm:h-40 md:h-48 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                alt="{{ $product->nama_produk }}"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f5f1e8%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 font-family=%22sans-serif%22 font-size=%2218%22 dy=%2210.5%22 font-weight=%22bold%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+            <!-- Image Container -->
+            <div class="relative overflow-hidden">
+                <img src="{{ $product->gambar ? asset('storage/' . $product->gambar) : '/img/placeholder.jpg' }}"
+                    class="h-32 sm:h-40 md:h-48 w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    alt="{{ $product->nama_produk }}"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f5f1e8%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 font-family=%22sans-serif%22 font-size=%2218%22 dy=%2210.5%22 font-weight=%22bold%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22%3ENo Image%3C/text%3E%3C/svg%3E'">
 
-            <!-- Badge Status -->
-            @if($product->stok > 0)
-            <div class="absolute top-2 left-2 bg-[#7cb342] text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
-                Tersedia
-            </div>
-            @else
-            <div class="absolute top-2 left-2 bg-gray-500 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
-                Stok Habis
-            </div>
-            @endif
-        </div>
-
-        <!-- Content - Menggunakan flex-1 untuk mengisi ruang yang tersisa -->
-        <div class="p-2.5 sm:p-4 flex flex-col flex-1">
-            <!-- Bagian atas yang flexible (bisa beda tinggi) -->
-            <div class="flex-1">
-                <!-- Kategori -->
-                <span class="inline-block px-2 py-0.5 bg-[#f5f1e8] text-[#6d4c41] text-[10px] sm:text-xs font-medium rounded mb-2">
-                    {{ ucfirst($product->kategori) }}
-                </span>
-
-                <!----- Nama Produk ----->
-                <h4 class="font-bold text-sm sm:text-base md:text-lg text-[#2d5016] mb-1 line-clamp-1">
-                    {{ $product->nama_produk }}
-                </h4>
-
-                <!----- ✅ DESKRIPSI PRODUK ----->
-                @if($product->deskripsi)
-                <p class="text-[9px] sm:text-xs text-gray-600 mb-2 line-clamp-3">
-                    {{ $product->deskripsi }}
-                </p>
+                <!-- Badge Status -->
+                @if($product->stok > 0)
+                <div class="absolute top-2 left-2 bg-[#7cb342] text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
+                    Tersedia
+                </div>
                 @else
-                <!-- Spacer untuk card tanpa deskripsi supaya tetap sejajar -->
-                <div class="h-8 sm:h-9 mb-2"></div>
+                <div class="absolute top-2 left-2 bg-gray-500 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
+                    Stok Habis
+                </div>
                 @endif
             </div>
 
-            <!-- Bagian bawah yang selalu sejajar -->
-            <div class="mt-auto">
-                <!----- Rating ----->
-                <div class="flex items-center gap-0.5 mb-2 sm:mb-3">
-                    @for ($j = 0; $j < 5; $j++)
-                    <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 fill-[#ff8f00] text-[#ff8f00]"></i>
-                    @endfor
-                    <span class="text-[10px] sm:text-sm text-gray-600 ml-1">(5.0)</span>
+            <!-- Content - Menggunakan flex-1 untuk mengisi ruang yang tersisa -->
+            <div class="p-2.5 sm:p-4 flex flex-col flex-1">
+                <!-- Bagian atas yang flexible (bisa beda tinggi) -->
+                <div class="flex-1">
+                    <!-- Kategori -->
+                    <span class="inline-block px-2 py-0.5 bg-[#f5f1e8] text-[#6d4c41] text-[10px] sm:text-xs font-medium rounded mb-2">
+                        {{ ucfirst($product->kategori) }}
+                    </span>
+
+                    <!----- Nama Produk ----->
+                    <h4 class="font-bold text-sm sm:text-base md:text-lg text-[#2d5016] mb-1 line-clamp-1">
+                    {{ $product->nama_produk }}
+                    </h4>
+
+                    <!----- ✅ DESKRIPSI PRODUK ----->
+                    @if($product->deskripsi)
+                    <p class="text-[9px] sm:text-xs text-gray-600 mb-2 line-clamp-3">
+                        {{ $product->deskripsi }}
+                    </p>
+                    @else
+                    <!-- Spacer untuk card tanpa deskripsi supaya tetap sejajar -->
+                    <div class="h-8 sm:h-9 mb-2"></div>
+                    @endif
                 </div>
 
-                <!----- Harga ----->
-                <div class="flex items-center justify-between mb-2 sm:mb-3">
-                    <div>
-                        <p class="text-base sm:text-xl md:text-2xl font-bold text-[#2d5016]">
-                            Rp {{ number_format($product->harga, 0, ',', '.') }}
-                        </p>
-                        <p class="text-[9px] sm:text-xs text-gray-500">per {{ $product->satuan }}</p>
+                <!-- Bagian bawah yang selalu sejajar -->
+                <div class="mt-auto">
+                    <!----- Rating ----->
+                    <div class="flex items-center gap-0.5 mb-2 sm:mb-3">
+                        @for ($j = 0; $j < 5; $j++)
+                        <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 fill-[#ff8f00] text-[#ff8f00]"></i>
+                        @endfor
+                        <span class="text-[10px] sm:text-sm text-gray-600 ml-1">(5.0)</span>
                     </div>
-                    <div class="text-right">
-                        <p class="text-[9px] sm:text-sm text-gray-600">Stok:</p>
-                        <p class="text-[10px] sm:text-sm font-semibold {{ $product->stok > 0 ? 'text-[#4a7c2c]' : 'text-red-500' }}">
-                            {{ $product->stok }}
-                        </p>
-                    </div>
-                </div>
 
-                <form action="{{ route('pembeli.cartAdd', $product->id) }}" method="POST" class="add-to-cart-form">
-                    @csrf
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="w-full bg-[#4a7c2c] hover:bg-[#2d5016] text-white py-1.5 sm:py-2.5 rounded-lg text-[10px] sm:text-sm md:text-base font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group-hover:scale-105 {{ $product->stok <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}"
-                            {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                        <i data-lucide="shopping-cart" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                        <span class="hidden sm:inline">Tambah</span>
-                        <span class="sm:hidden">+</span>
-                    </button>
-                </form>
+                    <!----- Harga ----->
+                    <div class="flex items-center justify-between mb-2 sm:mb-3">
+                        <div>
+                            <p class="text-base sm:text-xl md:text-2xl font-bold text-[#2d5016]">
+                                Rp {{ number_format($product->harga, 0, ',', '.') }}
+                            </p>
+                            <p class="text-[9px] sm:text-xs text-gray-500">per {{ $product->satuan }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] sm:text-sm text-gray-600">Stok:</p>
+                            <p class="text-[10px] sm:text-sm font-semibold {{ $product->stok > 0 ? 'text-[#4a7c2c]' : 'text-red-500' }}">
+                                {{ $product->stok }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('pembeli.cartAdd', $product->id) }}" method="POST" class="add-to-cart-form">
+                        @csrf
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="w-full bg-[#4a7c2c] hover:bg-[#2d5016] text-white py-1.5 sm:py-2.5 rounded-lg text-[10px] sm:text-sm md:text-base font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group-hover:scale-105 {{ $product->stok <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                {{ $product->stok <= 0 ? 'disabled' : '' }}>
+                            <i data-lucide="shopping-cart" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                            <span class="hidden sm:inline">Tambah</span>
+                            <span class="sm:hidden">Tambah ke Keranjang</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    @empty
-    <div class="col-span-2 sm:col-span-3 lg:col-span-4 xl:grid-cols-5">
-        <div class="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
-            <div class="w-20 h-20 bg-[#f5f1e8] rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="package-open" class="w-10 h-10 text-gray-400"></i>
+        @empty
+        <div class="col-span-2 sm:col-span-3 lg:col-span-4 xl:grid-cols-5">
+            <div class="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
+                <div class="w-20 h-20 bg-[#f5f1e8] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="package-open" class="w-10 h-10 text-gray-400"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Belum Ada Produk</h3>
+                <p class="text-gray-500">Toko ini belum memiliki produk yang tersedia</p>
             </div>
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">Belum Ada Produk</h3>
-            <p class="text-gray-500">Toko ini belum memiliki produk yang tersedia</p>
         </div>
+        @endforelse
     </div>
-    @endforelse
-</div>
     <!-- Pagination -->
     @if($products->hasPages())
     <div class="mt-8">

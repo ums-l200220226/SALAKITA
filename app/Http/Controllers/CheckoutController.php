@@ -37,7 +37,7 @@ class CheckoutController extends Controller
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('pembeli.cart')->with('error', 'Keranjang kosong!');
+            return redirect()->route('pembeli.cart')->with('error', 'Produk yang dipilih sudah tidak tersedia di keranjang!!'); ////// INNNNIIIII
         }
 
         // Cek apakah semua produk dari toko yang sama
@@ -95,7 +95,7 @@ class CheckoutController extends Controller
                 ->get();
 
             if ($cartItems->isEmpty()) {
-                return redirect()->route('pembeli.cart')->with('error', 'Keranjang kosong!');
+                return redirect()->route('pembeli.cart')->with('error', 'Produk yang dipilih sudah tidak tersedia di keranjang!'); ///// INIII JUGAAA
             }
 
             // Hitung subtotal
@@ -200,12 +200,12 @@ class CheckoutController extends Controller
             }
 
             // Jika COD (flow normal)
+            DB::commit();
+
             // Hapus cart items yang sudah di-checkout
             Cart::whereIn('id', $cartIds)->delete();
 
-            DB::commit();
-
-            return redirect()->route('pembeli.riwayat')->with('success', 'Pesanan berhasil dibuat! Nomor pesanan: ' . $order->order_number);
+            return redirect()->route('pembeli.riwayatPesanan')->with('success', 'Pesanan berhasil dibuat! Nomor pesanan: ' . $order->order_number);
 
         } catch (\Exception $e) {
             DB::rollback();

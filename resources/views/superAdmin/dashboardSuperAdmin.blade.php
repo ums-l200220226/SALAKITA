@@ -22,47 +22,47 @@
 </div>
 
 {{-- Stats Cards --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mb-5">
 
     {{-- Card 1: Total Transaksi --}}
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
-        <div class="flex items-center justify-between mb-3">
-            <div class="w-10 h-10 bg-[#ff8f00] bg-opacity-10 rounded-lg flex items-center justify-center">
-                <i data-lucide="shopping-cart" class="w-5 h-5 text-[#ff8f00]"></i>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 hover:shadow-md transition">
+        <div class="flex items-center justify-between mb-1.5">
+            <div class="w-5 h-5 bg-[#ff8f00] bg-opacity-10 rounded-md flex items-center justify-center">
+                <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-[#ff8f00]"></i>
             </div>
-            <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">Selesai</span>
+            <span class="text-[10px] font-medium text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded">Selesai</span>
         </div>
-        <p class="text-sm text-gray-600 mb-1">Total Transaksi</p>
-        <h2 class="text-3xl font-bold text-[#2d5016]">{{ number_format($totalTransaksi) }}</h2>
+        <p class="text-[11px] text-gray-600 mb-0.5">Total Transaksi</p>
+        <h2 class="text-xl font-bold text-[#2d5016]">{{ number_format($totalTransaksi) }}</h2>
         @if(isset($totalNilaiTransaksi))
-        <p class="text-xs text-gray-500 mt-2">
-            Nilai: Rp {{ number_format($totalNilaiTransaksi, 0, ',', '.') }}
+        <p class="text-[10px] text-gray-500 mt-0.5">
+            Rp {{ number_format($totalNilaiTransaksi, 0, ',', '.') }}
         </p>
         @endif
     </div>
 
     {{-- Card 2: Petani Aktif --}}
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
-        <div class="flex items-center justify-between mb-3">
-            <div class="w-10 h-10 bg-[#4a7c2c] bg-opacity-10 rounded-lg flex items-center justify-center">
-                <i data-lucide="users" class="w-5 h-5 text-[#4a7c2c]"></i>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 hover:shadow-md transition">
+        <div class="flex items-center justify-between mb-1.5">
+            <div class="w-5 h-5 bg-[#4a7c2c] bg-opacity-10 rounded-md flex items-center justify-center">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-[#4a7c2c]"></i>
             </div>
-            <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">Aktif</span>
+            <span class="text-[10px] font-medium text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded">Aktif</span>
         </div>
-        <p class="text-sm text-gray-600 mb-1">Petani Aktif</p>
-        <h2 class="text-3xl font-bold text-[#4a7c2c]">{{ $petaniAktif }}</h2>
+        <p class="text-[11px] text-gray-600 mb-0.5">Petani Aktif</p>
+        <h2 class="text-xl font-bold text-[#4a7c2c]">{{ $petaniAktif }}</h2>
     </div>
 
     {{-- Card 3: Pendapatan --}}
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
-        <div class="flex items-center justify-between mb-3">
-            <div class="w-10 h-10 bg-[#2d5016] bg-opacity-10 rounded-lg flex items-center justify-center">
-                <i data-lucide="wallet" class="w-5 h-5 text-[#2d5016]"></i>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 hover:shadow-md transition">
+        <div class="flex items-center justify-between mb-1.5">
+            <div class="w-5 h-5 bg-[#2d5016] bg-opacity-10 rounded-md flex items-center justify-center">
+                <i data-lucide="wallet" class="w-3.5 h-3.5 text-[#2d5016]"></i>
             </div>
-            <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">Total</span>
+            <span class="text-[10px] font-medium text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded">Total</span>
         </div>
-        <p class="text-sm text-gray-600 mb-1">Total Pendapatan</p>
-        <h2 class="text-3xl font-bold text-[#2d5016]">
+        <p class="text-[11px] text-gray-600 mb-0.5">Total Pendapatan</p>
+        <h2 class="text-xl font-bold text-[#2d5016]">
             Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
         </h2>
     </div>

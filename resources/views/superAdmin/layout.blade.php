@@ -92,7 +92,7 @@
                 </div>
                 <div class="text-sm">
                     <p class="font-semibold text-[#2d5016]">{{ Auth::user()->name }}</p>
-                    <p class="text-[#6d4c41] text-xs hidden sm:block">Super Admin</p>
+                    <p class="text-[#6d4c41] text-xs">Super Admin</p>
                 </div>
             </div>
         </div>

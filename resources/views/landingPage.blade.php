@@ -129,7 +129,7 @@
                     {{ $settings->history_title }}
                 </h3>
 
-                <div class="text-sm sm:text-base md:text-lg text-[#6d4c41] leading-relaxed text-left whitespace-pre-line">
+                <div class="text-sm sm:text-base md:text-lg text-[#6d4c41] leading-relaxed text-justify whitespace-pre-line">
                     {{ $settings->history_content }}
                 </div>
             </div>

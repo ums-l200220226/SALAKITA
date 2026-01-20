@@ -110,7 +110,7 @@
                 </div>
                 <div class="text-sm">
                     <p class="font-semibold text-[#4a7c2c]">{{ Auth::user()->name }}</p>
-                    <p class="text-gray-500 text-xs hidden sm:block">Petani</p>
+                    <p class="text-gray-500 text-xs">Petani</p>
                 </div>
             </div>
         </div>

@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         @forelse ($featuredProducts as $product)
         <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden group">
             <!-- Image Container -->
@@ -165,7 +165,7 @@
                     <button type="submit" class="w-full bg-[#4a7c2c] hover:bg-[#2d5016] text-white py-1.5 sm:py-2.5 rounded-lg text-[10px] sm:text-sm md:text-base font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group-hover:scale-105">
                         <i data-lucide="shopping-cart" class="w-3 h-3 sm:w-4 sm:h-4"></i>
                         <span class="hidden sm:inline">Tambah ke Keranjang</span>
-                        <span class="sm:hidden">Keranjang</span>
+                        <span class="sm:hidden">Tambah ke Keranjang</span>
                     </button>
                 </form>
             </div>
