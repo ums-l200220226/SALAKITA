@@ -114,17 +114,6 @@
             @yield('content')
         </main>
 
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-100 py-6 px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-                <p>SalaKita - Platform Agribisnis Digital</p>
-                <div class="flex gap-4 mt-3 md:mt-0">
-                    <a href="#" class="hover:text-[#2d5016] transition">Tentang</a>
-                    <a href="#" class="hover:text-[#2d5016] transition">Bantuan</a>
-                    <a href="#" class="hover:text-[#2d5016] transition">Kontak</a>
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
 

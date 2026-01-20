@@ -1,7 +1,7 @@
 @extends('pembeli.layout')
 
 @section('content')
-<div class="max-w-7xl mx-auto">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
     <!-- Header -->
     <div class="mb-8">
         <h1 class="text-2xl sm:text-3xl font-bold text-[#2d5016] mb-2">Keranjang Belanja</h1>
@@ -89,7 +89,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-start mb-2">
                                 <div class="flex-1 min-w-0 pr-2">
-                                    <h3 class="font-semibold text-[#2d5016] text-base sm:text-lg mb-1">
+                                    <h3 class="font-semibold text-[#2d5016] text-base sm:text-lg mb-1 break-words">
                                         {{ $item->product->nama_produk }}
                                     </h3>
                                     @if($item->product->deskripsi)
@@ -109,7 +109,7 @@
 
                             <!-- Harga -->
                             <div class="mb-3">
-                                <p class="text-xl sm:text-2xl font-bold text-[#2d5016]">
+                                <p class="text-xl sm:text-2xl font-bold text-[#2d5016] break-all">
                                     Rp {{ number_format($item->product->harga, 0, ',', '.') }}
                                 </p>
                                 <p class="text-xs text-gray-500">per {{ $item->product->satuan }}</p>
@@ -151,7 +151,7 @@
                             <div class="pt-3 border-t border-gray-100">
                                 <div class="flex justify-between items-center">
                                     <span class="text-sm text-gray-600">Subtotal:</span>
-                                    <span class="font-bold text-lg text-[#2d5016]">
+                                    <span class="font-bold text-lg text-[#2d5016] break-all">
                                         Rp {{ number_format($item->quantity * $item->product->harga, 0, ',', '.') }}
                                     </span>
                                 </div>
@@ -167,7 +167,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                         <p class="text-sm text-gray-600">Total Belanja dari {{ $tokoName }}</p>
-                        <p class="font-bold text-2xl text-[#2d5016]">
+                        <p class="font-bold text-2xl text-[#2d5016] break-all">
                             Rp {{ number_format($tokoTotal, 0, ',', '.') }}
                         </p>
                     </div>
@@ -196,7 +196,7 @@
                 <div class="flex-1 min-w-0">
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex-1 min-w-0 pr-2">
-                            <h3 class="font-semibold text-[#2d5016] text-base sm:text-lg mb-1">
+                            <h3 class="font-semibold text-[#2d5016] text-base sm:text-lg mb-1 break-words">
                                 {{ $item->product->nama_produk }}
                             </h3>
                             <p class="text-xs sm:text-sm text-gray-600 flex items-center gap-1">
@@ -215,7 +215,7 @@
 
                     <!-- Harga -->
                     <div class="mb-3">
-                        <p class="text-xl sm:text-2xl font-bold text-[#2d5016]">
+                        <p class="text-xl sm:text-2xl font-bold text-[#2d5016] break-all">
                             Rp {{ number_format($item->product->harga, 0, ',', '.') }}
                         </p>
                         <p class="text-xs text-gray-500">per {{ $item->product->satuan }}</p>
@@ -257,7 +257,7 @@
                     <div class="pt-3 border-t border-gray-100">
                         <div class="flex justify-between items-center mb-3">
                             <span class="text-sm text-gray-600">Subtotal:</span>
-                            <span class="font-bold text-lg text-[#2d5016]">
+                            <span class="font-bold text-lg text-[#2d5016] break-all">
                                 Rp {{ number_format($item->quantity * $item->product->harga, 0, ',', '.') }}
                             </span>
                         </div>
