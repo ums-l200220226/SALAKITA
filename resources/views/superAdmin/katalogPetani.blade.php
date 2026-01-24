@@ -118,12 +118,41 @@
                     {{ $product->nama_produk }}
                 </h4>
 
-                <!-- Rating -->
+                <!----- Rating Dinamis ----->
                 <div class="flex items-center gap-0.5 mb-2 sm:mb-3">
-                    @for ($j = 0; $j < 5; $j++)
-                    <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 fill-[#ff8f00] text-[#ff8f00]"></i>
-                    @endfor
-                    <span class="text-[10px] sm:text-sm text-gray-600 ml-1">(5.0)</span>
+                    @php
+                        $avgRating = $product->avg_rating ?? 0;
+                        $reviewCount = $product->review_count ?? 0;
+                        $fullStars = floor($avgRating);
+                        $hasHalfStar = ($avgRating - $fullStars) >= 0.5;
+                    @endphp
+
+                    @if($reviewCount > 0)
+                        {{-- Bintang penuh --}}
+                        @for ($i = 0; $i < $fullStars; $i++)
+                            <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 fill-[#ff8f00] text-[#ff8f00]"></i>
+                        @endfor
+
+                        {{-- Setengah bintang --}}
+                        @if($hasHalfStar)
+                            <i data-lucide="star-half" class="w-3 h-3 sm:w-4 sm:h-4 fill-[#ff8f00] text-[#ff8f00]"></i>
+                        @endif
+
+                        {{-- Bintang kosong --}}
+                        @for ($i = 0; $i < (5 - $fullStars - ($hasHalfStar ? 1 : 0)); $i++)
+                            <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 text-gray-300"></i>
+                        @endfor
+
+                        <span class="text-[10px] sm:text-sm text-gray-600 ml-1">
+                            ({{ number_format($avgRating, 1) }}) · {{ $reviewCount }} ulasan
+                        </span>
+                    @else
+                        {{-- Jika belum ada review --}}
+                        @for ($i = 0; $i < 5; $i++)
+                            <i data-lucide="star" class="w-3 h-3 sm:w-4 sm:h-4 text-gray-300"></i>
+                        @endfor
+                        <span class="text-[10px] sm:text-sm text-gray-500 ml-1">Belum ada ulasan</span>
+                    @endif
                 </div>
 
                 <!-- Harga (TANPA STOK) -->
