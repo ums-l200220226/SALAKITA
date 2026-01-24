@@ -174,7 +174,7 @@
 
                             @if($loop->first)
                                 <span class="bg-[#ff8f00] text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                    Best Seller
+                                    Terlaris
                                 </span>
                             @endif
                         </div>

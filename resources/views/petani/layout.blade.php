@@ -122,13 +122,10 @@
 
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-100 py-6 px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+        <div class="flex flex-col md:flex-row justify-center md:justify-between items-center text-sm text-gray-600">
             <p class="text-center md:text-left">SalaKita - Platform Agribisnis Digital</p>
-            <div class="flex gap-4 mt-3 md:mt-0">
-                <a href="#" class="hover:text-[#4a7c2c] transition">Tentang</a>
-                <a href="#" class="hover:text-[#4a7c2c] transition">Bantuan</a>
-                <a href="#" class="hover:text-[#4a7c2c] transition">Kontak</a>
-            </div>
+            <!-- Bisa tambahin copyright di sini kalau mau -->
+            <p class="text-center md:text-right mt-2 md:mt-0">© 2025 Aminah Estu Utami</p>
         </div>
     </footer>
 </div>
