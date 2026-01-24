@@ -94,7 +94,7 @@
                                 <div class="flex flex-col items-center text-center gap-2">
                                     <i data-lucide="package" class="w-8 h-8 text-[#4a7c2c]"></i>
                                     <span class="font-semibold text-sm">Diambil</span>
-                                    <span class="text-xs text-gray-500">Gratis ambil ke penjual</span>
+                                    <span class="text-xs text-gray-500">Ambil ke penjual</span>
                                 </div>
                             </div>
                         </label>

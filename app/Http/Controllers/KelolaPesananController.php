@@ -89,6 +89,16 @@ class KelolaPesananController extends Controller
             'dibatalkan' => []
         ];
 
+        // MODIFIKASI: Untuk metode DIAMBIL, dari "diproses" langsung ke "selesai" (skip "dikirim")
+        if ($order->metode_penerimaan == 'diambil') {
+            $allowedTransitions['diproses'] = ['selesai', 'dibatalkan']; // Hapus "dikirim"
+        }
+
+        // MODIFIKASI: Untuk metode DIKIRIM, dari "diproses" harus ke "dikirim" dulu (tidak bisa langsung "selesai")
+        if ($order->metode_penerimaan == 'dikirim') {
+            $allowedTransitions['diproses'] = ['dikirim', 'dibatalkan']; // Hapus "selesai"
+        }
+
         if (!in_array($newStatus, $allowedTransitions[$oldStatus] ?? [])) {
             return back()->with('error', 'Perubahan status tidak valid.');
         }

@@ -5,7 +5,7 @@
     <div class="w-full mx-auto px-3 sm:px-6 lg:px-8 py-1 sm:py-1">
     <!-- Header -->
     <div class="mb-4 sm:mb-6">
-        <h1 class="text-lg sm:text-3xl font-bold text-[#2d5016] mb-1 sm:mb-2">Riwayat Pesanan</h1>
+        <h1 class="text-3xl font-bold text-[#2d5016] mb-2">Riwayat Pesanan</h1>
         <p class="text-xs sm:text-base text-gray-600">Lihat dan kelola pesanan Anda</p>
     </div>
 
