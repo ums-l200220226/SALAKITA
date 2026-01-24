@@ -136,8 +136,8 @@
                     <!----- Rating Dinamis ----->
                     <div class="flex items-center gap-0.5 mb-2 sm:mb-3">
                         @php
-                            $avgRating = round($product->avg_rating, 1);
-                            $reviewCount = $product->review_count;
+                            $avgRating = $product->avg_rating ?? 0;
+                            $reviewCount = $product->review_count ?? 0;
                             $fullStars = floor($avgRating);
                             $hasHalfStar = ($avgRating - $fullStars) >= 0.5;
                         @endphp

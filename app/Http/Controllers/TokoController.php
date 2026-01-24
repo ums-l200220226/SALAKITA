@@ -33,16 +33,37 @@ class TokoController extends Controller
 
         // Ambil produk berdasarkan toko_id, dan status aktif
         $products = Product::where('toko_id', $toko->id)  // ← Pakai toko_id
-                      ->where('status', 'aktif')      // ← HANYA PRODUK AKTIF
-                      ->latest()
-                      ->paginate(12);
+                        ->where('status', 'aktif')      // ← HANYA PRODUK AKTIF
+                        ->get()
+                        ->map(function($product) {
+                            // Hitung rating sekali untuk semua produk
+                            $ratingData = \DB::table('order_items')
+                                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                                ->where('order_items.product_id', $product->id)
+                                ->where('orders.status', 'selesai')
+                                ->whereNotNull('orders.rating')
+                                ->selectRaw('AVG(orders.rating) as avg_rating, COUNT(*) as review_count')
+                                ->first();
 
+                            $product->avg_rating = round($ratingData->avg_rating ?? 0, 1);
+                            $product->review_count = $ratingData->review_count ?? 0;
 
-        // ✅ HITUNG RATING UNTUK SETIAP PRODUK
-        foreach ($products as $product) {
-            $product->avg_rating = $product->getAvgRating();
-            $product->review_count = $product->getReviewCount();
-        }
+                            return $product;
+                        });
+        // Convert kembali ke paginator
+        $perPage = 12;
+        $currentPage = request()->get('page', 1);
+        $productsCollection = collect($products);
+
+        $currentPageItems = $productsCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $products = new \Illuminate\Pagination\LengthAwarePaginator(
+            $currentPageItems,
+            $productsCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         return view('pembeli.katalog', compact('toko', 'products'));
     }
@@ -70,15 +91,36 @@ class TokoController extends Controller
             $toko = Toko::with('user')->findOrFail($id);
 
             $products = Product::where('toko_id', $id)
-                          ->where('status', 'aktif')
-                          ->latest()
-                          ->paginate(12);
+                            ->where('status', 'aktif')
+                            ->get()
+                            ->map(function($product) {
+                                $ratingData = \DB::table('order_items')
+                                    ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                                    ->where('order_items.product_id', $product->id)
+                                    ->where('orders.status', 'selesai')
+                                    ->whereNotNull('orders.rating')
+                                    ->selectRaw('AVG(orders.rating) as avg_rating, COUNT(*) as review_count')
+                                    ->first();
 
-            // ✅ HITUNG RATING UNTUK SETIAP PRODUK (UNTUK ADMIN JUGA)
-            foreach ($products as $product) {
-                $product->avg_rating = $product->getAvgRating();
-                $product->review_count = $product->getReviewCount();
-            }
+                            $product->avg_rating = round($ratingData->avg_rating ?? 0, 1);
+                            $product->review_count = $ratingData->review_count ?? 0;
+
+                            return $product;
+                        });
+
+            $perPage = 12;
+            $currentPage = request()->get('page', 1);
+            $productsCollection = collect($products);
+
+            $currentPageItems = $productsCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+            $products = new \Illuminate\Pagination\LengthAwarePaginator(
+                $currentPageItems,
+                $productsCollection->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
 
             return view('superAdmin.katalogPetani', compact('toko', 'products'));
         }
