@@ -37,6 +37,13 @@ class TokoController extends Controller
                       ->latest()
                       ->paginate(12);
 
+
+        // ✅ HITUNG RATING UNTUK SETIAP PRODUK
+        foreach ($products as $product) {
+            $product->avg_rating = $product->getAvgRating();
+            $product->review_count = $product->getReviewCount();
+        }
+
         return view('pembeli.katalog', compact('toko', 'products'));
     }
 
@@ -66,6 +73,12 @@ class TokoController extends Controller
                           ->where('status', 'aktif')
                           ->latest()
                           ->paginate(12);
+
+            // ✅ HITUNG RATING UNTUK SETIAP PRODUK (UNTUK ADMIN JUGA)
+            foreach ($products as $product) {
+                $product->avg_rating = $product->getAvgRating();
+                $product->review_count = $product->getReviewCount();
+            }
 
             return view('superAdmin.katalogPetani', compact('toko', 'products'));
         }

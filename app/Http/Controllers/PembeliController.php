@@ -150,7 +150,7 @@ class PembeliController extends Controller
         }
 
         // Cek apakah sudah pernah review
-        if ($order->rating !== null) {
+        if ($order->rating != null) {
             return back()->with('error', 'Anda sudah memberikan review untuk pesanan ini.');
         }
 
