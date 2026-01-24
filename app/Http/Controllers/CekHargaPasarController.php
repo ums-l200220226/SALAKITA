@@ -12,7 +12,7 @@ class CekHargaPasarController extends Controller
     {
         $products = Product::where('user_id', '!=', Auth::id())
                             ->where('status', 'aktif')
-                            ->with('user')
+                            ->with('user', 'toko')
                             ->latest()
                             ->paginate(20);
 

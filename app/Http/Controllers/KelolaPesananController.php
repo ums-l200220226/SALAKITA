@@ -84,7 +84,7 @@ class KelolaPesananController extends Controller
             'pending' => ['dikonfirmasi', 'dibatalkan'],
             'dikonfirmasi' => ['diproses', 'dibatalkan'],
             'diproses' => ['dikirim', 'selesai','dibatalkan'],
-            'dikirim' => ['selesai'],
+            'dikirim' => [],
             'selesai' => [],
             'dibatalkan' => []
         ];
@@ -105,7 +105,11 @@ class KelolaPesananController extends Controller
 
             // Khusus untuk metode "diambil", hanya petani yang bisa set selesai
             if ($newStatus == 'selesai' && $order->metode_penerimaan == 'diambil') {
-            // Allowed
+            }
+
+            // Khusus untuk metode "dikirim", HANYA PEMBELI yang bisa set selesai
+            if ($newStatus == 'selesai' && $order->metode_penerimaan == 'dikirim') {
+                return back()->with('error', 'Pesanan dengan metode "dikirim" hanya bisa diselesaikan oleh pembeli setelah menerima barang.');
             }
 
             $order->status = $newStatus;

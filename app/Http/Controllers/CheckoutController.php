@@ -171,6 +171,10 @@ class CheckoutController extends Controller
 
                 // Kurangi stok produk
                 $item->product->decrement('stok', $item->quantity);
+
+                // Tambah total terjual
+                $item->product->increment('total_terjual', $item->quantity);
+
             }
 
             // Jika metode pembayaran QRIS

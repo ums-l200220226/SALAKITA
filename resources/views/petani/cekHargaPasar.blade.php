@@ -127,7 +127,7 @@
             <!-- Store Name -->
             <div class="flex items-center gap-1 text-xs text-gray-600 pt-2 border-t border-gray-100">
                 <i data-lucide="store" class="w-3 h-3"></i>
-                <span class="truncate">{{ $product->user->name ?? 'Toko Petani' }}</span>
+                <span class="truncate">{{ $product->toko->nama_toko ?? $product->user->name ?? 'Toko Petani' }}</span>
             </div>
         </div>
     </div>
