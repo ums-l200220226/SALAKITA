@@ -82,7 +82,7 @@
     </div>
 
     <!-- Product Grid -->
-    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-8">
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-8">
         @forelse($products as $product)
         <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden group product-card"
             data-kategori="{{ $product->kategori }}">
