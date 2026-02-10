@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Product;
@@ -46,20 +47,37 @@ class DashboardSuperAdminController extends Controller
         // Total Pendapatan Keseluruhan (orders selesai)
         $totalPendapatan = Order::where('status', 'selesai')->sum('total');
 
+        // Ambil daftar tahun yang tersedia (dari tahun pertama transaksi sampai tahun sekarang)
+        $tahunTersedia = [];
+        $tahunPertama = Order::min(DB::raw('YEAR(created_at)'));
+        $tahunSekarang = now()->year;
+
+        if ($tahunPertama) {
+            for ($year = $tahunPertama; $year <= $tahunSekarang; $year++) {
+                $tahunTersedia[] = $year;
+            }
+        } else {
+            // Kalau belum ada transaksi, default tahun sekarang aja
+            $tahunTersedia[] = $tahunSekarang;
+        }
+
+        // Tahun yang dipilih (default: tahun sekarang)
+        $tahunDipilih = request('tahun', $tahunSekarang);
+
         // Data Grafik Transaksi per Bulan (12 bulan terakhir)
         $bulan = [];
         $jumlah = [];
 
-        for ($i = 11; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
-            $count = Order::whereYear('created_at', $date->year)
-                ->whereMonth('created_at', $date->month)
-                ->count();
+        for ($i = 1; $i <= 12; $i++) {
+            $count = Order::whereYear('created_at', $tahunDipilih)
+                    ->whereMonth('created_at', $i)
+                    ->where('status', 'selesai')
+                    ->count();
 
-            $bulan[] = $date->locale('id')->isoFormat('MMM YYYY'); // Jan 2026
+            $bulan[] = \Carbon\Carbon::create($tahunDipilih, $i, 1)->locale('id')->isoFormat('MMM YYYY');
             $jumlah[] = $count;
         }
 
-        return view('superAdmin.dashboardSuperAdmin', compact('totalTransaksi', 'petaniAktif', 'petaniPending', 'petaniDitolak', 'bulan', 'jumlah', 'petaniBaru', 'totalProdukAktif', 'totalPendapatan'));
+        return view('superAdmin.dashboardSuperAdmin', compact('totalTransaksi', 'petaniAktif', 'petaniPending', 'petaniDitolak', 'bulan', 'jumlah', 'petaniBaru', 'totalProdukAktif', 'totalPendapatan', 'tahunTersedia', 'tahunDipilih'));
     }
 }

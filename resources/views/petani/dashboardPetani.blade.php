@@ -68,17 +68,42 @@
     </div>
 </div>
 
-<!-- Filter Produk -->
+<!-- Filter Section -->
 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
-    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <label class="text-sm font-semibold text-[#4a7c2c] whitespace-nowrap">Filter Grafik:</label>
-        <select id="productFilter"
-                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent">
-            <option value="">Semua Produk</option>
-            @foreach($products as $product)
-                <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
-            @endforeach
-        </select>
+    <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold text-[#4a7c2c]">Filter Grafik</h3>
+
+        <div class="flex items-center gap-3">
+            <!-- Filter Tahun -->
+            <div>
+                <label class="text-xs text-gray-600 mb-1 block">Tahun</label>
+                <select id="yearFilter"
+                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
+                    @foreach($tahunTersedia as $tahun)
+                        <option value="{{ $tahun }}" {{ $tahun == $tahunDipilih ? 'selected' : '' }}>
+                            {{ $tahun }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Filter Produk -->
+            <div>
+                <label class="text-xs text-gray-600 mb-1 block">Produk</label>
+                <select id="productFilter"
+                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
+                    <option value="">Semua Produk</option>
+                    @foreach($products as $product)
+                        <option value="{{ $product->id }}">
+                            {{ $product->nama_produk }}
+                            @if($product->status !== 'aktif')
+                                <span class="text-gray-500">(Non-Aktif)</span>
+                            @endif
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -262,15 +287,28 @@
 
     // Filter handler
     setTimeout(function() {
-        const filterEl = document.getElementById('productFilter');
-        if (filterEl) {
-            filterEl.addEventListener('change', function() {
-                const productId = this.value;
-                fetch(`/petani/chart-data?product_id=${productId}`)
-                    .then(response => response.json())
-                    .then(data => initCharts(data))
-                    .catch(error => console.error('Error:', error));
-            });
+        const yearFilterEl = document.getElementById('yearFilter');
+        const productFilterEl = document.getElementById('productFilter');
+
+        // Function untuk fetch data
+        function fetchChartData() {
+            const tahun = yearFilterEl ? yearFilterEl.value : {{ $tahunDipilih }};
+            const productId = productFilterEl ? productFilterEl.value : '';
+
+            fetch(`/petani/chart-data?tahun=${tahun}&product_id=${productId}`)
+                .then(response => response.json())
+                .then(data => initCharts(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Event listener untuk filter tahun
+        if (yearFilterEl) {
+            yearFilterEl.addEventListener('change', fetchChartData);
+        }
+
+        // Event listener untuk filter produk
+        if (productFilterEl) {
+            productFilterEl.addEventListener('change', fetchChartData);
         }
     }, 500);
 })();

@@ -9,7 +9,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
+    {{-- Bootstrap Icons --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -68,9 +70,9 @@
 
     <!-- Logout -->
     <div class="mt-auto pt-6 border-t border-gray-100">
-        <form action="{{ route('logout') }}" method="POST">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit"
+            <button type="button" onclick="confirmLogout()"
                 class="w-full flex items-center gap-3 py-3 px-4 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition group">
                 <i data-lucide="log-out" class="w-5 h-5"></i>
                 <span class="font-medium">Logout</span>
@@ -132,6 +134,22 @@
 
 <script> lucide.createIcons(); </script>
 <script>
+function confirmLogout() {
+    Swal.fire({
+        title: 'Konfirmasi Logout',
+        text: 'Apakah Anda yakin ingin keluar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('logout-form').submit();
+        }
+    });
+}
     const sidebar = document.getElementById('sidebar');
 
     // Klik di luar sidebar → sidebar nutup

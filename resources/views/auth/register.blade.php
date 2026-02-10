@@ -7,6 +7,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
@@ -171,12 +172,40 @@
 
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" required>
+                    <div class="input-group">
+                        <input type="password"
+                            name="password"
+                            id="password"
+                            class="form-control @error('password') is-invalid @enderror"
+                            placeholder="Masukkan kata sandi"
+                            required>
+
+                        <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('password', 'eyeIcon1')">
+                            <i id="eyeIcon1" class="bi bi-eye-slash"></i>
+                        </span>
+                    </div>
+                    @error('password')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation" class="form-control" required>
+                    <div class="input-group">
+                        <input type="password"
+                            name="password_confirmation"
+                            id="password_confirmation"
+                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                            placeholder="Konfirmasi kata sandi"
+                            required>
+
+                        <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('password_confirmation', 'eyeIcon2')">
+                            <i id="eyeIcon2" class="bi bi-eye-slash"></i>
+                        </span>
+                    </div>
+                    @error('password_confirmation')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-register mt-2">Daftar</button>
@@ -217,6 +246,21 @@
                 namaTokoInput.value = 'Toko ' + this.value;
             }
         });
+
+        function togglePassword(inputId, iconId) {
+            const password = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            } else {
+                password.type = "password";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            }
+        }
     </script>
 </body>
 </html>

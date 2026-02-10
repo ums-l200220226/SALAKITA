@@ -78,12 +78,20 @@
                 <h2 class="text-xl font-bold text-[#2d5016] mb-1">
                     Grafik Transaksi Petani
                 </h2>
-                <p class="text-sm text-[#6d4c41]">Performa transaksi 12 bulan terakhir</p>
+                <p class="text-sm text-[#6d4c41]">Performa transaksi tahun <span id="tahunTerpilih">{{ $tahunDipilih }}</span></p>
             </div>
-            {{--<button class="px-4 py-2 bg-[#f5f1e8] text-[#2d5016] rounded-lg text-sm font-medium hover:bg-[#4a7c2c] hover:text-white transition-all">
-                <i data-lucide="download" class="w-4 h-4 inline mr-1"></i>
-                Export
-            </button>--}}
+
+            {{-- Dropdown Filter Tahun --}}
+            <div>
+                <select id="filterTahun"
+                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm font-medium text-[#2d5016]">
+                    @foreach($tahunTersedia as $tahun)
+                        <option value="{{ $tahun }}" {{ $tahun == $tahunDipilih ? 'selected' : '' }}>
+                            {{ $tahun }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <canvas id="grafikTransaksi" class="w-full" style="max-height: 300px;"></canvas>
     </div>
@@ -244,6 +252,12 @@
                 }
             }
         }
+    });
+
+    // Event listener untuk filter tahun
+    document.getElementById('filterTahun').addEventListener('change', function() {
+        const tahun = this.value;
+        window.location.href = '{{ route("superAdmin.dashboardSuperAdmin") }}?tahun=' + tahun;
     });
 
     lucide.createIcons();

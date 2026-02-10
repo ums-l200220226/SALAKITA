@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PetaniApproved;
+use App\Mail\PetaniRejected;
 
 class KonfirmasiPetaniController extends Controller
 {
@@ -26,20 +29,43 @@ class KonfirmasiPetaniController extends Controller
     // SETUJUI PETANI
     public function approve($id)
     {
-        User::where('id', $id)->update([
-            'status_aktif' => 'aktif'
+        // Mencari petani berdasarkan ID
+        $petani = User::findOrFail($id);
+
+        // Update status jadi aktif
+        $petani->update([
+        'status_aktif' => 'aktif'
+
         ]);
 
-        return back()->with('success', 'Petani berhasil disetujui!');
+        // Kirim email approval
+        Mail::to($petani->email)->send(new PetaniApproved($petani));
+
+        return back()->with('success', 'Petani berhasil disetujui dan email telah dikirim!');
     }
 
     // TOLAK PETANI
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
-        User::where('id', $id)->update([
+        // Validasi input alasan
+        $request->validate([
+            'reason' => 'required|string|min:10'
+        ], [
+            'reason.required' => 'Alasan penolakan harus diisi',
+            'reason.min' => 'Alasan penolakan minimal 10 karakter'
+        ]);
+
+        // Mencari petani berdasarkan ID
+        $petani = User::findOrFail($id);
+
+        // Update status jadi ditolak
+        $petani->update([
             'status_aktif' => 'ditolak'
         ]);
 
-        return back()->with('success', 'Petani ditolak.');
+        // Kirim email rejection dengan alasan
+        Mail::to($petani->email)->send(new PetaniRejected($petani, $request->reason));
+
+        return back()->with('success', 'Petani ditolak dan email telah dikirim!');
     }
 }

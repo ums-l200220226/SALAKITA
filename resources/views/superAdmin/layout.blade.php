@@ -8,6 +8,10 @@
     {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    {{-- SweetAlert2 CDN --}}
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {{-- Chart.js CDN --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -62,10 +66,10 @@
 
     <!-- Logout -->
     <div class="mt-auto pt-6 border-t border-gray-100">
-        <form action="{{ route('logout') }}" method="POST">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit"
-                class="w-full flex items-center gap-3 py-3 px-4 rounded-lg text-gray-100 hover:bg-red-50 hover:text-red-600 transition group">
+            <button type="button" onclick="confirmLogout()"
+                class="w-full flex items-center gap-3 py-3 px-4 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition group">
                 <i data-lucide="log-out" class="w-5 h-5"></i>
                 <span class="font-medium">Logout</span>
             </button>
@@ -106,6 +110,23 @@
 
 <script>
     lucide.createIcons();
+
+function confirmLogout() {
+    Swal.fire({
+        title: 'Konfirmasi Logout',
+        text: 'Apakah Anda yakin ingin keluar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('logout-form').submit();
+        }
+    });
+}
 
     // Close sidebar when clicking outside on mobile
     document.addEventListener('DOMContentLoaded', function() {

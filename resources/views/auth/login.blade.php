@@ -90,11 +90,20 @@
     <div class="login-wrapper">
         <div class="login-card">
             <img src="{{ asset('img/SalaKitaTanpaBGLogin.png') }}" alt="Logo SALAKITA" class="login-logo">
-
+            {{--Pesan error--}}
             @if (session('error'))
                 <div class="alert alert-danger text-center">{{ session('error') }}</div>
             @endif
-            
+
+            {{-- Untuk menampilkan pesan register sukses --}}
+            @if(session('message'))
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    {{ session('message') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             <form action="{{ route('login.post') }}" method="POST">
                 @csrf
 

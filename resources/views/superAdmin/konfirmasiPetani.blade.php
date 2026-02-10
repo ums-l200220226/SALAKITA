@@ -373,14 +373,49 @@
                         class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">
                     Batal
                 </button>
-                <form id="rejectForm" method="POST" class="flex-1">
-                    @csrf
-                    <button type="submit"
-                            class="w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
-                        Ya, Tolak
-                    </button>
-                </form>
+                <button type="button"
+                        onclick="showRejectReasonModal()"
+                        class="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+                    Ya, Tolak
+                </button>
             </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Input Alasan Penolakan --}}
+<div id="rejectReasonModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
+        <div class="p-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="message-square" class="w-8 h-8 text-red-600"></i>
+            </div>
+            <h3 class="text-xl font-bold text-center text-[#2d5016] mb-2">Alasan Penolakan</h3>
+            <p class="text-center text-gray-600 mb-4 text-sm">
+                Tuliskan alasan penolakan untuk <strong id="reject-reason-name"></strong>
+            </p>
+
+            <form id="rejectReasonForm" method="POST">
+                @csrf
+                <textarea name="reason"
+                          id="reject-reason"
+                          rows="4"
+                          required
+                          placeholder="Contoh: Data KTP tidak jelas, Nomor telepon tidak valid, dll."
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-none mb-4"></textarea>
+
+                <div class="flex gap-3">
+                    <button type="button"
+                            onclick="closeRejectReasonModal()"
+                            class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">
+                        Batal
+                    </button>
+                    <button type="submit"
+                            class="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+                        Kirim & Tolak
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -406,6 +441,27 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
+    // SweetAlert untuk Success/Error Message
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#4a7c2c',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#ef4444',
+            confirmButtonText: 'OK'
+        });
+    @endif
+    
     // Modal Riwayat
     function showHistoryModal() {
         document.getElementById('historyModal').classList.remove('hidden');
@@ -457,10 +513,13 @@
     }
 
     // Reject Modal Functions
+    let currentRejectId = null;
+    let currentRejectName = null;
+
     function showRejectModal(id, name) {
+        currentRejectId = id;
+        currentRejectName = name;
         document.getElementById('reject-name').textContent = name;
-        document.getElementById('rejectForm').action =
-            "{{ route('superAdmin.rejectPetani', ':id') }}".replace(':id', id);
         document.getElementById('rejectModal').classList.remove('hidden');
         lucide.createIcons();
     }
@@ -469,11 +528,29 @@
         document.getElementById('rejectModal').classList.add('hidden');
     }
 
+    function showRejectReasonModal() {
+        // Tutup modal konfirmasi
+        closeRejectModal();
+
+        // Buka modal alasan
+        document.getElementById('reject-reason-name').textContent = currentRejectName;
+        document.getElementById('rejectReasonForm').action =
+            "{{ route('superAdmin.rejectPetani', ':id') }}".replace(':id', currentRejectId);
+        document.getElementById('rejectReasonModal').classList.remove('hidden');
+        lucide.createIcons();
+    }
+
+    function closeRejectReasonModal() {
+        document.getElementById('rejectReasonModal').classList.add('hidden');
+        document.getElementById('reject-reason').value = ''; // Reset textarea
+    }
+
     // Close modals when clicking outside
     window.onclick = function(event) {
         const detailModal = document.getElementById('detailModal');
         const approveModal = document.getElementById('approveModal');
         const rejectModal = document.getElementById('rejectModal');
+        const rejectReasonModal = document.getElementById('rejectReasonModal');
 
         if (event.target === detailModal) {
             closeDetailModal();
@@ -484,6 +561,9 @@
         if (event.target === rejectModal) {
             closeRejectModal();
         }
+        if (event.target === rejectReasonModal) {
+        closeRejectReasonModal();
+        }
     }
 
     // Close modals with ESC key
@@ -492,6 +572,7 @@
             closeDetailModal();
             closeApproveModal();
             closeRejectModal();
+            closeRejectReasonModal();
         }
     });
 </script>

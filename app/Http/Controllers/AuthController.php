@@ -1,40 +1,65 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Lokasi file Controller
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use App\Models\Toko;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request; // Untuk menangani HTTP request (data dari form, URL, dll)
+use Illuminate\Support\Facades\Auth; // Untuk autentikasi (login, logout, cek user yang sedang login)
+use Illuminate\Support\Facades\DB; // Untuk query database langsung (DB::table, DB::select, dll)
+use App\Models\User; // Untuk mengakses model User (data pengguna)
+use App\Models\Toko; // Untuk mengakses model Toko (data toko)
 
 class AuthController extends Controller
 {
-    // ✅ Menampilkan form login
+    // Function (wadah yang berisi perintah-perintah)
+    // Untuk menampilkan halaman form login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // ✅ Proses login
+    // Untuk proses login
     public function login(Request $request)
     {
+        // Untuk validasi supaya email dan password tidak kosong
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'password.required' => 'Password wajib diisi',
+
+        ]);
+
+        // Mengambil hanya email dan password dari form
         $credentials = $request->only('email', 'password');
 
-        if (!Auth::attempt($credentials)) {
-            return back()->with('error', 'Email atau password salah.');
+        // Mengecek apakah email dan password cocok di database
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            // Email tidak ditemukan
+            return back()->with('error', 'Email tidak terdaftar');
         }
 
+        // Mengecek apakah passwordnya cocok
+        if (!Auth::attempt($credentials)) {
+            // Email ada, tapi password salah
+            return back()->with('error', 'Password yang Anda masukkan salah!');
+        }
+
+        // Mengambil data user yang sedang login
         $user = Auth::user();
 
-        // PETANI HARUS MENUNGGU DISETUJUI
+        // Mengecek status petani
+        // Jika petani dan status masih pending, tidak bisa login
         if ($user->role == 'petani' && $user->status_aktif == 'pending') {
             Auth::logout();
             return back()->with('error', 'Akun Anda belum disetujui oleh SuperAdmin.');
         }
 
-        // Direct user ke dashboard sesuai role
+        // Mengarahkan user ke dashboard sesuai role
         if ($user->role == 'superadmin') {
             return redirect()->route('superAdmin.dashboardSuperAdmin');
         }
@@ -48,20 +73,23 @@ class AuthController extends Controller
         }
     }
 
+    // Untuk fitur lupa password saat login
     public function forgotPassword()
     {
+        // Hanya menampilkan halaman lupa password
         return view('auth.forgot-password');
     }
 
-    // ✅ Menampilkan form register
+    // Untuk menampilkan halaman form register
     public function showRegisterForm()
     {
         return view('auth.register');
     }
 
-    // ✅ Proses register (UPDATED - dengan Toko)
+    // Untuk proses register
     public function register(Request $request)
     {
+        // Memvalidasi inputnyaa harus sesuai ketentuan di database
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users',
@@ -69,15 +97,27 @@ class AuthController extends Controller
             'role' => 'required|in:pembeli,petani',
             'alamat' => 'required|string',
             'no_hp' => 'required|string|max:15',
-            'nama_toko' => 'required_if:role,petani|string|max:255|nullable', // Tambahan untuk petani
+            'nama_toko' => 'required_if:role,petani|string|max:255|nullable', // Ini yang petani-petani aja wkwk
         ], [
-            'nama_toko.required_if' => 'Nama toko wajib diisi untuk petani',
+            // Pesan-pesan error
+            'name.required' => 'Nama lengkap wajib diisi!',
+            'name.max' => 'Nama maksimal 100 karakter.',
+
+            'email.required' => 'Email wajib diisi!',
+            'email.email' => 'Format email tidak valid!',
+            'email.unique' => 'Email sudah terdaftar. Gunakan email lain!',
+
+            'password.required' => 'Password wajib diisi!',
+            'password.min' => 'Password minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok!',
+            'nama_toko.required_if' => 'Nama toko wajib diisi untuk petani!', // Pesan errornya kalau nama tokonya ga diisi oleh petani (gabisa kosong)
         ]);
 
         try {
-            DB::beginTransaction();
+            // Mulai transaksi database (semua atau tidak sama sekali)
+            DB::beginTransaction(); // Memulai transaksi
 
-            // Buat user
+            // Buat user baru
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -86,17 +126,18 @@ class AuthController extends Controller
             $user->alamat = $request->alamat;
             $user->no_hp = $request->no_hp;
 
+            // Setting statusnya berdasarkan role
             if ($request->role == 'petani') {
-                // harus disetujui superadmin
+                // Petani harus disetujui superAdmin
                 $user->status_aktif = 'pending';
             } else {
-                // pembeli langsung aktif
+                // Untuk Pembeli langsung aktif
                 $user->status_aktif = 'aktif';
             }
 
-            $user->save();
+            $user->save(); // Menyimpan user ke database
 
-            // ✅ TAMBAHAN: Jika role petani, buat toko otomatis
+            // Membuat toko otomatis untuk Petaninya
             if ($request->role == 'petani') {
                 $namaToko = $request->nama_toko ?? 'Toko ' . $request->name;
 
@@ -110,7 +151,7 @@ class AuthController extends Controller
                 ]);
             }
 
-            DB::commit();
+            DB::commit(); // Menyimpan semua perubahan di database
 
             // Redirect dengan pesan sesuai role
             if ($user->role == 'petani') {
@@ -120,6 +161,7 @@ class AuthController extends Controller
             return redirect()->route('login')->with('message', 'Akun pembeli berhasil dibuat. Silakan login.');
 
         } catch (\Exception $e) {
+            // Rollback jika ada error, semua perubahan dibatalkan ngga disimpan
             DB::rollBack();
 
             return redirect()->back()
@@ -128,12 +170,12 @@ class AuthController extends Controller
         }
     }
 
-    // ✅ Logout
+    // Untuk Logout
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        Auth::logout(); // Logout user
+        $request->session()->invalidate(); // Hapus session
+        $request->session()->regenerateToken(); // Generate CSRF token baru (keamanan)
 
         return redirect('/login');
     }

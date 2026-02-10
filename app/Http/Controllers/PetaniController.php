@@ -41,7 +41,7 @@ class PetaniController extends Controller
     {
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed',
+            'new_password' => 'required|min:6|confirmed',
         ]);
 
         $user = Auth::user();
@@ -53,7 +53,7 @@ class PetaniController extends Controller
 
         // Update password baru
         $user->update([
-            'password' => Hash::make($request->new_password)
+            'password' => $request->new_password
         ]);
 
         return redirect()->route('petani.profil')

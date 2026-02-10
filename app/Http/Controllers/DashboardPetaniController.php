@@ -59,40 +59,61 @@ class DashboardPetaniController extends Controller
             'nonaktif' => Auth::user()->products()->where('status', 'nonaktif')->count(),
         ];
 
-        // ✅ DATA GRAFIK: Penjualan & Pendapatan per Bulan (12 bulan terakhir)
-        $chartData = $this->getChartData($toko->id);
+        // ✅ Ambil daftar tahun yang tersedia
+        $tahunTersedia = [];
+        $tahunPertama = Order::where('toko_id', $toko->id)
+            ->where('status', 'selesai')
+            ->min(DB::raw('YEAR(created_at)'));
+        $tahunSekarang = now()->year;
+
+        if ($tahunPertama) {
+            for ($year = $tahunPertama; $year <= $tahunSekarang; $year++) {
+                $tahunTersedia[] = $year;
+            }
+        } else {
+            $tahunTersedia[] = $tahunSekarang;
+        }
+
+        // Tahun yang dipilih (default: tahun sekarang)
+        $tahunDipilih = request('tahun', $tahunSekarang);
+
+        // ✅ DATA GRAFIK: Penjualan & Pendapatan per Bulan (untuk tahun yang dipilih)
+        $chartData = $this->getChartData($toko->id, null, $tahunDipilih);
 
         // ✅ Daftar produk untuk filter
         $products = Product::where('user_id', $user->id)
-            ->where('status', 'aktif')
+            ->orderBy('status', 'desc')  // Aktif duluan, baru non-aktif
             ->orderBy('nama_produk')
             ->get();
 
-        return view('petani.dashboardPetani', compact('stats', 'jumlahPenjualan', 'totalPendapatan', 'pesananSelesai', 'chartData', 'products'));
+        return view('petani.dashboardPetani', compact('stats', 'jumlahPenjualan', 'totalPendapatan', 'pesananSelesai', 'chartData', 'products', 'tahunTersedia', 'tahunDipilih'));
     }
 
     // ✅ Fungsi untuk generate data chart
-    private function getChartData($tokoId, $productId = null)
+    private function getChartData($tokoId, $productId = null, $tahun = null)
     {
-        // 12 bulan terakhir
+        // Jika tahun tidak ditentukan, pakai tahun sekarang
+        if (!$tahun) {
+            $tahun = now()->year;
+        }
+
         $months = [];
         $penjualanData = [];
         $pendapatanData = [];
 
-        for ($i = 11; $i >= 0; $i--) {
-            $date = Carbon::now()->subMonths($i);
-            $year = $date->year;
-            $month = $date->month;
+        // Loop untuk 12 bulan (Jan - Des) pada tahun yang dipilih
+        for ($i = 1; $i <= 12; $i++) {
+            $date = Carbon::create($tahun, $i, 1);
             $monthName = $date->locale('id')->isoFormat('MMM YYYY');
 
             $months[] = $monthName;
 
             // Query penjualan (kg) per bulan
-            $penjualanQuery = OrderItem::whereHas('order', function($query) use ($tokoId, $year, $month) {
+            $penjualanQuery = OrderItem::whereHas('order', function($query) use ($tokoId, $tahun, $i) {
                 $query->where('toko_id', $tokoId)
                       ->where('status', 'selesai')
-                      ->whereYear('created_at', $year)
-                      ->whereMonth('created_at', $month);
+                      ->whereYear('created_at', $tahun)
+                      ->whereMonth('created_at', $i);
             });
 
             // Filter per produk jika ada
@@ -105,18 +126,18 @@ class DashboardPetaniController extends Controller
             // Query pendapatan per bulan
             if ($productId) {
                 // Jika filter per produk, hitung total dari order items
-                $pendapatanData[] = OrderItem::whereHas('order', function($query) use ($tokoId, $year, $month) {
+                $pendapatanData[] = OrderItem::whereHas('order', function($query) use ($tokoId, $tahun, $i) {
                     $query->where('toko_id', $tokoId)
                           ->where('status', 'selesai')
-                          ->whereYear('created_at', $year)
-                          ->whereMonth('created_at', $month);
+                          ->whereYear('created_at', $tahun)
+                          ->whereMonth('created_at', $i);
                 })->where('product_id', $productId)->sum('subtotal') ?? 0;
             } else {
                 // Semua produk
                 $pendapatanData[] = Order::where('toko_id', $tokoId)
                     ->where('status', 'selesai')
-                    ->whereYear('created_at', $year)
-                    ->whereMonth('created_at', $month)
+                    ->whereYear('created_at', $tahun)
+                    ->whereMonth('created_at', $i)
                     ->sum('total') ?? 0;
             }
         }
@@ -142,7 +163,8 @@ class DashboardPetaniController extends Controller
         }
 
         $productId = $request->product_id ?: null;
-        $chartData = $this->getChartData($toko->id, $productId);
+        $tahun = $request->tahun ?: now()->year;
+        $chartData = $this->getChartData($toko->id, $productId, $tahun);
 
         return response()->json($chartData);
     }

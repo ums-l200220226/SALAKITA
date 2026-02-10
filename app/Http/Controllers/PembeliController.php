@@ -42,7 +42,7 @@ class PembeliController extends Controller
     {
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed',
+            'new_password' => 'required|min:6|confirmed',
         ]);
 
         $user = Auth::user();
@@ -53,7 +53,7 @@ class PembeliController extends Controller
         }
 
         // Update password
-        $user->password = Hash::make($request->new_password);
+        $user->password = $request->new_password;
         $user->save();
 
         return redirect()->route('pembeli.profil')->with('success', 'Password berhasil diubah!');
