@@ -9,7 +9,7 @@
         <p class="text-gray-600">Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
     </div>
 
-    <!-- Success/Error Message -->
+    <!-- Pesan error dan sukses -->
     @if(session('success'))
     <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6">
         {{ session('success') }}
