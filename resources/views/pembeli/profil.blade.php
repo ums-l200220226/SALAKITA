@@ -157,10 +157,18 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Password Lama
                         </label>
-                        <input type="password"
-                               name="current_password"
-                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
-                               required>
+                        <div class="relative">
+                            <input type="password"
+                                    name="current_password"
+                                    id="current_password"
+                                    class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
+                                    required>
+                            <button type="button"
+                                    onclick="togglePassword('current_password', 'eyeIcon1')"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i class="bi bi-eye-slash" id="eyeIcon1"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Password Baru -->
@@ -168,10 +176,18 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Password Baru
                         </label>
-                        <input type="password"
-                               name="new_password"
-                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
-                               required>
+                        <div class="relative">
+                            <input type="password"
+                                    name="new_password"
+                                    id="new_password"
+                                    class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
+                                    required>
+                            <button type="button"
+                                    onclick="togglePassword('new_password', 'eyeIcon2')"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i class="bi bi-eye-slash" id="eyeIcon2"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Konfirmasi Password -->
@@ -179,10 +195,18 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Konfirmasi Password Baru
                         </label>
-                        <input type="password"
-                               name="new_password_confirmation"
-                               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
-                               required>
+                        <div class="relative">
+                            <input type="password"
+                                    name="new_password_confirmation"
+                                    id="new_password_confirmation"
+                                    class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a7c2c] focus:border-transparent"
+                                    required>
+                            <button type="button"
+                                    onclick="togglePassword('new_password_confirmation', 'eyeIcon3')"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i class="bi bi-eye-slash" id="eyeIcon3"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -194,11 +218,59 @@
             </form>
         </div>
     </div>
-
 </div>
 
 <script>
-    lucide.createIcons();
+// SweetAlert untuk Success/Error Message
+@if(session('success'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#4a7c2c',
+        confirmButtonText: 'OK'
+    });
+@endif
+
+@if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#ef4444',
+        confirmButtonText: 'OK'
+    });
+@endif
+
+// Validation errors
+@if($errors->any())
+    Swal.fire({
+        icon: 'error',
+        title: 'Validasi Gagal!',
+        html: '<ul style="text-align: left;">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+        confirmButtonColor: '#ef4444',
+        confirmButtonText: 'OK'
+    });
+@endif
+
+// Toggle password visibility (Bootstrap Icons version)
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    } else {
+        input.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    }
+}
+
+// Initialize Lucide icons
+lucide.createIcons();
 </script>
 
 @endsection

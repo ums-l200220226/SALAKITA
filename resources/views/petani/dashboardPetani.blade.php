@@ -70,15 +70,16 @@
 
 <!-- Filter Section -->
 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
-    <div class="flex items-center justify-between">
+    <!-- Mobile: Stack Vertical, Desktop: Horizontal -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h3 class="text-base font-semibold text-[#4a7c2c]">Filter Grafik</h3>
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <!-- Filter Tahun -->
-            <div>
+            <div class="flex-1 sm:flex-none">
                 <label class="text-xs text-gray-600 mb-1 block">Tahun</label>
                 <select id="yearFilter"
-                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
                     @foreach($tahunTersedia as $tahun)
                         <option value="{{ $tahun }}" {{ $tahun == $tahunDipilih ? 'selected' : '' }}>
                             {{ $tahun }}
@@ -88,16 +89,16 @@
             </div>
 
             <!-- Filter Produk -->
-            <div>
+            <div class="flex-1 sm:flex-none sm:min-w-[200px]">
                 <label class="text-xs text-gray-600 mb-1 block">Produk</label>
                 <select id="productFilter"
-                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4a7c2c] focus:border-[#4a7c2c] text-sm">
                     <option value="">Semua Produk</option>
                     @foreach($products as $product)
                         <option value="{{ $product->id }}">
                             {{ $product->nama_produk }}
                             @if($product->status !== 'aktif')
-                                <span class="text-gray-500">(Non-Aktif)</span>
+                                (Non-Aktif)
                             @endif
                         </option>
                     @endforeach
