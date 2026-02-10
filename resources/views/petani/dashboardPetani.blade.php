@@ -145,7 +145,6 @@
     </div>
 </div>
 
-{{-- Script langsung di sini, bukan @push --}}
 <script>
 (function() {
     console.log('Script started');
