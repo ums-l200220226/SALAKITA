@@ -210,8 +210,7 @@
                 </div>
 
                 <button type="submit"
-                        class="mt-6 bg-[#ff8f00] hover:bg-[#e67e00] text-white py-3 px-8 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
-                    <i data-lucide="key" class="w-5 h-5"></i>
+                        class="mt-6 bg-[#ff8f00] hover:bg-[#e67e00] text-white py-3 px-8 rounded-lg font-semibold transition-all duration-300">
                     Update Password
                 </button>
             </form>

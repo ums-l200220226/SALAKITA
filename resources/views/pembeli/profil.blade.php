@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto">
+<div class="container mx-auto px-4 py-1">
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-4">
         <h1 class="text-3xl font-bold text-[#2d5016] mb-2">Profil Saya</h1>
         <p class="text-gray-600">Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
     </div>
@@ -33,7 +33,7 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                             <!-- Role -->
                             <div>
@@ -150,7 +150,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     <!-- Password Lama -->
                     <div>
@@ -211,8 +211,7 @@
                 </div>
 
                 <button type="submit"
-                        class="mt-6 bg-[#ff8f00] hover:bg-[#e67e00] text-white py-3 px-8 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
-                    <i data-lucide="key" class="w-5 h-5"></i>
+                        class="mt-6 bg-[#ff8f00] hover:bg-[#e67e00] text-white py-3 px-8 rounded-lg font-semibold transition-all duration-300">
                     Update Password
                 </button>
             </form>
